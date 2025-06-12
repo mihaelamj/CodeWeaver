@@ -317,6 +317,30 @@
       </div>
     </div>
 
+    <!-- General Experience (additions) -->
+    <div class="section general">
+      <div class="question" onclick="toggleAnswer(this)">
+        <span class="question-text">Describe your experience with pair programming and TDD (Test-Driven Development) in iOS projects.</span>
+        <span class="toggle">▼</span>
+      </div>
+      <div class="answer">
+        <div class="answer-content">
+          <strong>Pair programming:</strong>
+          <ul>
+            <li>How you approach collaborative coding</li>
+            <li>Benefits: knowledge sharing, code quality, onboarding</li>
+            <li>Challenges: time management, communication</li>
+          </ul>
+          <strong>TDD:</strong>
+          <ul>
+            <li>How you write tests before code</li>
+            <li>Impact on design, refactoring, and bug reduction</li>
+            <li>Tools: XCTest, Quick/Nimble</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
     <!-- Project Management -->
     <div class="section project">
       <div class="question" onclick="toggleAnswer(this)">
@@ -353,6 +377,23 @@
           </ul>
           <strong>Tools that help:</strong> JIRA/Linear for task tracking,
           Notion/Confluence for documentation, calendar blocking for deep work
+        </div>
+      </div>
+    </div>
+
+    <!-- Project Management (additions) -->
+    <div class="section project">
+      <div class="question" onclick="toggleAnswer(this)">
+        <span class="question-text">What prioritization techniques do you use to focus on the most important tasks?</span>
+        <span class="toggle">▼</span>
+      </div>
+      <div class="answer">
+        <div class="answer-content">
+          <ul>
+            <li>Moscow method (Must have, Should have, Could have, Won't have)</li>
+            <li>Eisenhower matrix (urgent vs important)</li>
+            <li>Regular backlog grooming and stakeholder alignment</li>
+          </ul>
         </div>
       </div>
     </div>
@@ -405,6 +446,24 @@
               <strong>Knowledge sharing:</strong> Document findings, create team
               learning sessions
             </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Challenging Environments (additions) -->
+    <div class="section challenging">
+      <div class="question" onclick="toggleAnswer(this)">
+        <span class="question-text">How do you approach refactoring and making incremental improvements in a legacy codebase?</span>
+        <span class="toggle">▼</span>
+      </div>
+      <div class="answer">
+        <div class="answer-content">
+          <ul>
+            <li>Identify high-risk areas and add tests before refactoring</li>
+            <li>Break down large changes into small, reviewable steps</li>
+            <li>Use feature flags for safe rollout</li>
+            <li>Document changes and share knowledge with the team</li>
           </ul>
         </div>
       </div>
@@ -496,6 +555,38 @@ struct Environment {
       </div>
     </div>
 
+    <!-- Testing & Code Quality (additions) -->
+    <div class="section testing">
+      <div class="question" onclick="toggleAnswer(this)">
+        <span class="question-text">How do you use mocking in your tests? Manual mocks vs libraries?</span>
+        <span class="toggle">▼</span>
+      </div>
+      <div class="answer">
+        <div class="answer-content">
+          <ul>
+            <li>Manual mocks: custom classes conforming to protocols</li>
+            <li>Libraries: Cuckoo, Mockingbird, Sourcery</li>
+            <li>When to use each: simple dependencies vs complex behaviors</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="section testing">
+      <div class="question" onclick="toggleAnswer(this)">
+        <span class="question-text">What are the pros and cons of using singletons for dependency injection?</span>
+        <span class="toggle">▼</span>
+      </div>
+      <div class="answer">
+        <div class="answer-content">
+          <ul>
+            <li>Pros: easy access, global state, simple for small apps</li>
+            <li>Cons: hard to test, hidden dependencies, tight coupling</li>
+            <li>Alternatives: constructor injection, environment pattern</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
     <!-- Swift vs Objective-C -->
     <div class="section swift">
       <div class="question" onclick="toggleAnswer(this)">
@@ -538,6 +629,38 @@ struct Environment {
           </ul>
           <strong>Interoperability:</strong> Bridging headers, @objc attributes,
           mixed-language projects
+        </div>
+      </div>
+    </div>
+
+    <!-- Swift vs Objective-C (additions) -->
+    <div class="section swift">
+      <div class="question" onclick="toggleAnswer(this)">
+        <span class="question-text">How do you bridge between Swift and Objective-C in a mixed codebase?</span>
+        <span class="toggle">▼</span>
+      </div>
+      <div class="answer">
+        <div class="answer-content">
+          <ul>
+            <li>Use bridging headers to expose Objective-C to Swift</li>
+            <li>@objc and dynamic keywords to expose Swift to Objective-C</li>
+            <li>Limitations: enums, generics, some Swift-only features</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="section swift">
+      <div class="question" onclick="toggleAnswer(this)">
+        <span class="question-text">How would you call C or C++ code from Swift if needed?</span>
+        <span class="toggle">▼</span>
+      </div>
+      <div class="answer">
+        <div class="answer-content">
+          <ul>
+            <li>Use bridging headers for C</li>
+            <li>For C++, create Objective-C++ wrappers (.mm files) and expose via Objective-C</li>
+            <li>Limitations: no direct C++ to Swift bridging</li>
+          </ul>
         </div>
       </div>
     </div>
@@ -602,6 +725,23 @@ actor UserStore {
       </div>
     </div>
 
+    <!-- Concurrency (additions) -->
+    <div class="section concurrency">
+      <div class="question" onclick="toggleAnswer(this)">
+        <span class="question-text">When would you use semaphores in iOS, and what are the risks?</span>
+        <span class="toggle">▼</span>
+      </div>
+      <div class="answer">
+        <div class="answer-content">
+          <ul>
+            <li>Use for synchronizing access to resources, limiting concurrency</li>
+            <li>Risks: deadlocks, priority inversion, complexity</li>
+            <li>Prefer higher-level abstractions (DispatchQueue, actors) when possible</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
     <!-- Memory Management -->
     <div class="section memory">
       <div class="question" onclick="toggleAnswer(this)">
@@ -651,6 +791,174 @@ actor UserStore {
             </li>
             <li>Small classes: Consider structs to reduce heap allocation</li>
             <li>Copy-on-write for collections to optimize struct copying</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Memory Management (additions) -->
+    <div class="section memory">
+      <div class="question" onclick="toggleAnswer(this)">
+        <span class="question-text">What are some ARC edge cases and how do you handle them?</span>
+        <span class="toggle">▼</span>
+      </div>
+      <div class="answer">
+        <div class="answer-content">
+          <ul>
+            <li>Unowned references: use when the reference should never be nil, but can crash if accessed after deallocation</li>
+            <li>Weak references: use for optional, non-owning references</li>
+            <li>Closures capturing self: use [weak self] or [unowned self] to avoid retain cycles</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="section memory">
+      <div class="question" onclick="toggleAnswer(this)">
+        <span class="question-text">How do you decide between using a struct, class, or actor for a given type?</span>
+        <span class="toggle">▼</span>
+      </div>
+      <div class="answer">
+        <div class="answer-content">
+          <ul>
+            <li>Struct: value semantics, simple data, thread safety</li>
+            <li>Class: reference semantics, identity, inheritance</li>
+            <li>Actor: shared mutable state, concurrency safety</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SDKs & Libraries (new section) -->
+    <div class="section sdk">
+      <div class="question" onclick="toggleAnswer(this)">
+        <span class="question-text">What are the tradeoffs between static and dynamic libraries in iOS?</span>
+        <span class="toggle">▼</span>
+      </div>
+      <div class="answer">
+        <div class="answer-content">
+          <ul>
+            <li>Static: included in app binary, faster launch, larger app size, no runtime updates</li>
+            <li>Dynamic: loaded at runtime, smaller initial app size, can be updated independently, slower launch</li>
+            <li>Choose based on update needs, app size, and performance requirements</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="section sdk">
+      <div class="question" onclick="toggleAnswer(this)">
+        <span class="question-text">How do you approach building reusable internal SDKs or modules?</span>
+        <span class="toggle">▼</span>
+      </div>
+      <div class="answer">
+        <div class="answer-content">
+          <ul>
+            <li>Define clear APIs and documentation</li>
+            <li>Use Swift Package Manager or CocoaPods for distribution</li>
+            <li>Write tests and provide example usage</li>
+            <li>Versioning and changelog for updates</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- macOS vs iOS -->
+    <div class="section macos">
+      <div class="question" onclick="toggleAnswer(this)">
+        <span class="question-text">What are the main differences in file system and sandboxing between iOS and macOS?</span>
+        <span class="toggle">▼</span>
+      </div>
+      <div class="answer">
+        <div class="answer-content">
+          <ul>
+            <li>iOS: strict sandboxing, limited file access, app-specific containers</li>
+            <li>macOS: more flexible, user-selected file access, sandboxing optional for non-App Store apps</li>
+            <li>Impacts on document handling, security, and inter-app communication</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="section macos">
+      <div class="question" onclick="toggleAnswer(this)">
+        <span class="question-text">How do you share codebases for multiplatform (iOS/macOS) apps?</span>
+        <span class="toggle">▼</span>
+      </div>
+      <div class="answer">
+        <div class="answer-content">
+          <ul>
+            <li>Use Swift Package Manager for shared modules</li>
+            <li>Conditional compilation (#if os(iOS), #if os(macOS))</li>
+            <li>Platform-agnostic APIs and abstractions</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- App Lifecycle -->
+    <div class="section lifecycle">
+      <div class="question" onclick="toggleAnswer(this)">
+        <span class="question-text"
+          >Describe the changes in iOS app lifecycle management post-iOS 13 with
+          SceneDelegate.</span
+        >
+        <span class="toggle">▼</span>
+      </div>
+      <div class="answer">
+        <div class="answer-content">
+          <strong>Pre-iOS 13 (AppDelegate only):</strong>
+          <ul>
+            <li>Single app instance, simple lifecycle management</li>
+            <li>
+              Methods: didFinishLaunching, willEnterForeground,
+              didEnterBackground
+            </li>
+          </ul>
+
+          <strong>iOS 13+ (SceneDelegate):</strong>
+          <ul>
+            <li>
+              <strong>Multi-scene support:</strong> Multiple windows/scenes per
+              app
+            </li>
+            <li>
+              <strong>AppDelegate:</strong> App-level events, scene session
+              management
+            </li>
+            <li>
+              <strong>SceneDelegate:</strong> Scene-specific lifecycle, UI state
+              management
+            </li>
+          </ul>
+
+          <strong>Key SceneDelegate methods:</strong>
+          <pre><code class="language-swift">
+func scene(_ scene: UIScene, willConnectTo session: UISceneSession)
+func sceneDidBecomeActive(_ scene: UIScene)
+func sceneWillResignActive(_ scene: UIScene)
+func sceneDidEnterBackground(_ scene: UIScene)
+          </code></pre>
+
+          <strong>State restoration:</strong>
+          <ul>
+            <li>Scene-based state preservation</li>
+            <li>User activity continuation between scenes</li>
+            <li>Background app refresh per scene</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- App Lifecycle (additions) -->
+    <div class="section lifecycle">
+      <div class="question" onclick="toggleAnswer(this)">
+        <span class="question-text">How do you handle background modes and background execution timing in iOS?</span>
+        <span class="toggle">▼</span>
+      </div>
+      <div class="answer">
+        <div class="answer-content">
+          <ul>
+            <li>Enable background modes in Xcode (location, audio, fetch, etc.)</li>
+            <li>Understand system constraints: limited execution time, power management</li>
+            <li>Use background tasks and notifications for long-running work</li>
           </ul>
         </div>
       </div>
@@ -715,55 +1023,19 @@ actor UserStore {
       </div>
     </div>
 
-    <!-- App Lifecycle -->
-    <div class="section lifecycle">
+    <!-- Architecture (additions) -->
+    <div class="section architecture">
       <div class="question" onclick="toggleAnswer(this)">
-        <span class="question-text"
-          >Describe the changes in iOS app lifecycle management post-iOS 13 with
-          SceneDelegate.</span
-        >
+        <span class="question-text">Give a real-world example of applying architecture patterns in a modular iOS project.</span>
         <span class="toggle">▼</span>
       </div>
       <div class="answer">
         <div class="answer-content">
-          <strong>Pre-iOS 13 (AppDelegate only):</strong>
           <ul>
-            <li>Single app instance, simple lifecycle management</li>
-            <li>
-              Methods: didFinishLaunching, willEnterForeground,
-              didEnterBackground
-            </li>
-          </ul>
-
-          <strong>iOS 13+ (SceneDelegate):</strong>
-          <ul>
-            <li>
-              <strong>Multi-scene support:</strong> Multiple windows/scenes per
-              app
-            </li>
-            <li>
-              <strong>AppDelegate:</strong> App-level events, scene session
-              management
-            </li>
-            <li>
-              <strong>SceneDelegate:</strong> Scene-specific lifecycle, UI state
-              management
-            </li>
-          </ul>
-
-          <strong>Key SceneDelegate methods:</strong>
-          <pre><code class="language-swift">
-func scene(_ scene: UIScene, willConnectTo session: UISceneSession)
-func sceneDidBecomeActive(_ scene: UIScene)
-func sceneWillResignActive(_ scene: UIScene)
-func sceneDidEnterBackground(_ scene: UIScene)
-          </code></pre>
-
-          <strong>State restoration:</strong>
-          <ul>
-            <li>Scene-based state preservation</li>
-            <li>User activity continuation between scenes</li>
-            <li>Background app refresh per scene</li>
+            <li>Feature modules using MVVM or VIPER</li>
+            <li>Shared networking and analytics modules</li>
+            <li>Decoupled UI and business logic for testability</li>
+            <li>Use of dependency injection for module boundaries</li>
           </ul>
         </div>
       </div>
