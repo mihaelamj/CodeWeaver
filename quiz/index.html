@@ -1,0 +1,824 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>iOS Interview Practice Test</title>
+    <style>
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 20px;
+        line-height: 1.6;
+        background: #f8f9fa;
+      }
+
+      .header {
+        text-align: center;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 30px;
+        border-radius: 12px;
+        margin-bottom: 30px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      }
+
+      .section {
+        background: white;
+        margin-bottom: 20px;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+        border-left: 5px solid;
+      }
+
+      .general {
+        border-left-color: #9f7aea;
+      }
+      .project {
+        border-left-color: #ecc94b;
+      }
+      .challenging {
+        border-left-color: #4299e1;
+      }
+      .testing {
+        border-left-color: #48bb78;
+      }
+      .swift {
+        border-left-color: #ed8936;
+      }
+      .concurrency {
+        border-left-color: #f56565;
+      }
+      .memory {
+        border-left-color: #a0522d;
+      }
+      .sdk {
+        border-left-color: #e2e8f0;
+      }
+      .macos {
+        border-left-color: #2d3748;
+      }
+      .lifecycle {
+        border-left-color: #ecc94b;
+      }
+      .architecture {
+        border-left-color: #38a169;
+      }
+
+      .question {
+        background: #f7fafc;
+        padding: 20px;
+        cursor: pointer;
+        border-bottom: 1px solid #e2e8f0;
+        transition: all 0.3s ease;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .question:hover {
+        background: #edf2f7;
+      }
+
+      .question-text {
+        font-weight: 600;
+        color: #2d3748;
+      }
+
+      .toggle {
+        font-size: 18px;
+        color: #718096;
+        transition: transform 0.3s ease;
+      }
+
+      .question.active .toggle {
+        transform: rotate(180deg);
+      }
+
+      .answer {
+        padding: 0 20px;
+        max-height: 0;
+        overflow: hidden;
+        transition: all 0.4s ease;
+        background: white;
+      }
+
+      .answer.show {
+        max-height: 2000px;
+        padding: 20px;
+      }
+
+      .answer-content {
+        color: #4a5568;
+        margin: 0;
+      }
+
+      .answer-content ul {
+        margin: 10px 0;
+        padding-left: 20px;
+      }
+
+      .answer-content li {
+        margin-bottom: 8px;
+      }
+
+      .answer-content strong {
+        color: #2d3748;
+      }
+
+      .progress {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 4px;
+        background: linear-gradient(to right, #667eea, #764ba2);
+        width: 0%;
+        transition: width 0.3s ease;
+        z-index: 1000;
+      }
+
+      .stats {
+        text-align: center;
+        background: white;
+        padding: 20px;
+        border-radius: 12px;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+      }
+
+      .stat-item {
+        display: inline-block;
+        margin: 0 20px;
+        padding: 10px;
+      }
+
+      .stat-number {
+        font-size: 24px;
+        font-weight: bold;
+        color: #667eea;
+      }
+
+      .stat-label {
+        font-size: 12px;
+        color: #718096;
+        text-transform: uppercase;
+      }
+    </style>
+    <link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-swift.min.js"></script>
+  </head>
+  <body>
+    <div class="progress" id="progress"></div>
+
+    <div class="header">
+      <h1>📱 iOS Client Interview Practice Test</h1>
+      <p>Comprehensive Q&A based on your prep material</p>
+    </div>
+
+    <div class="stats">
+      <div class="stat-item">
+        <div class="stat-number" id="totalQuestions">32</div>
+        <div class="stat-label">Total Questions</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number" id="answeredQuestions">0</div>
+        <div class="stat-label">Reviewed</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number" id="progressPercent">0%</div>
+        <div class="stat-label">Progress</div>
+      </div>
+    </div>
+
+    <!-- General Experience -->
+    <div class="section general">
+      <div class="question" onclick="toggleAnswer(this)">
+        <span class="question-text"
+          >Tell me about your iOS development background and the types of apps
+          you've built.</span
+        >
+        <span class="toggle">▼</span>
+      </div>
+      <div class="answer">
+        <div class="answer-content">
+          <strong>Structure your answer to include:</strong>
+          <ul>
+            <li>
+              <strong>Career timeline:</strong> Years of experience, progression
+              from junior to current level
+            </li>
+            <li>
+              <strong>App types:</strong> Consumer apps (social, productivity,
+              entertainment) vs enterprise apps (internal tools, B2B solutions)
+            </li>
+            <li>
+              <strong>Platform scope:</strong> iPhone-only, universal apps,
+              iPad-specific features
+            </li>
+            <li>
+              <strong>Team dynamics:</strong> Solo development, small teams
+              (2-5), larger teams (10+)
+            </li>
+            <li>
+              <strong>Notable projects:</strong> Mention apps in the App Store,
+              user base size, technical challenges solved
+            </li>
+          </ul>
+          <strong>Example answer framework:</strong> "I have X years of iOS
+          development experience, starting with [first role]. I've built both
+          consumer apps like [example] with [user base] and enterprise solutions
+          for [industry]. My experience ranges from solo development to working
+          in agile teams of up to [number] developers."
+        </div>
+      </div>
+    </div>
+
+    <div class="section general">
+      <div class="question" onclick="toggleAnswer(this)">
+        <span class="question-text"
+          >Describe your code quality practices and development workflow.</span
+        >
+        <span class="toggle">▼</span>
+      </div>
+      <div class="answer">
+        <div class="answer-content">
+          <strong>Cover these essential practices:</strong>
+          <ul>
+            <li>
+              <strong>Code Reviews:</strong> PR review process, what you look
+              for, how you give/receive feedback
+            </li>
+            <li>
+              <strong>Testing Strategy:</strong> Unit test coverage targets,
+              integration testing approach
+            </li>
+            <li>
+              <strong>Pull Request Workflow:</strong> Branch naming, commit
+              message standards, CI/CD integration
+            </li>
+            <li>
+              <strong>Quality Gates:</strong> Automated checks, linting rules,
+              static analysis tools
+            </li>
+            <li>
+              <strong>Documentation:</strong> Code comments, README files,
+              technical specifications
+            </li>
+          </ul>
+          <strong>Mention specific tools:</strong> Xcode, Git, fastlane,
+          SwiftLint, SonarQube, Jenkins/GitHub Actions
+        </div>
+      </div>
+    </div>
+
+    <div class="section general">
+      <div class="question" onclick="toggleAnswer(this)">
+        <span class="question-text"
+          >How do you handle App Store rejections and what's your experience
+          with Apple support?</span
+        >
+        <span class="toggle">▼</span>
+      </div>
+      <div class="answer">
+        <div class="answer-content">
+          <strong>Common rejection scenarios:</strong>
+          <ul>
+            <li>
+              <strong>Privacy violations:</strong> Missing usage descriptions,
+              unauthorized data collection
+            </li>
+            <li>
+              <strong>UI/UX issues:</strong> Confusing navigation, missing
+              functionality
+            </li>
+            <li>
+              <strong>Performance problems:</strong> Crashes, excessive battery
+              usage, slow loading
+            </li>
+            <li>
+              <strong>Content policy:</strong> Inappropriate content, misleading
+              information
+            </li>
+          </ul>
+          <strong>Resolution approach:</strong>
+          <ul>
+            <li>Carefully read rejection feedback and Apple's guidelines</li>
+            <li>Reproduce the issue in Apple's testing environment</li>
+            <li>Document fixes clearly in resubmission notes</li>
+            <li>
+              Use App Store Connect to communicate with review team when needed
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Project Management -->
+    <div class="section project">
+      <div class="question" onclick="toggleAnswer(this)">
+        <span class="question-text"
+          >How do you manage context switching and handle multiple overlapping
+          responsibilities?</span
+        >
+        <span class="toggle">▼</span>
+      </div>
+      <div class="answer">
+        <div class="answer-content">
+          <strong>Effective strategies include:</strong>
+          <ul>
+            <li>
+              <strong>Time boxing:</strong> Dedicated blocks for different types
+              of work (coding, reviews, meetings)
+            </li>
+            <li>
+              <strong>Documentation:</strong> Detailed notes on current
+              progress, next steps, blockers
+            </li>
+            <li>
+              <strong>Priority matrix:</strong> Urgent/Important categorization,
+              stakeholder alignment
+            </li>
+            <li>
+              <strong>Context preservation:</strong> Meaningful commit messages,
+              TODO comments, work-in-progress branches
+            </li>
+            <li>
+              <strong>Communication:</strong> Regular status updates, proactive
+              blocking issue escalation
+            </li>
+          </ul>
+          <strong>Tools that help:</strong> JIRA/Linear for task tracking,
+          Notion/Confluence for documentation, calendar blocking for deep work
+        </div>
+      </div>
+    </div>
+
+    <!-- Challenging Environments -->
+    <div class="section challenging">
+      <div class="question" onclick="toggleAnswer(this)">
+        <span class="question-text"
+          >Describe your approach to working with legacy codebases and
+          unstructured environments.</span
+        >
+        <span class="toggle">▼</span>
+      </div>
+      <div class="answer">
+        <div class="answer-content">
+          <strong>Assessment phase:</strong>
+          <ul>
+            <li>
+              <strong>Code exploration:</strong> Understand architecture,
+              identify patterns and anti-patterns
+            </li>
+            <li>
+              <strong>Risk analysis:</strong> Find critical paths, areas with
+              high change frequency
+            </li>
+            <li>
+              <strong>Test coverage review:</strong> Identify gaps, prioritize
+              areas for testing
+            </li>
+            <li>
+              <strong>Documentation audit:</strong> What exists, what's missing,
+              what's outdated
+            </li>
+          </ul>
+          <strong>Improvement strategy:</strong>
+          <ul>
+            <li>
+              <strong>Incremental refactoring:</strong> Small, safe changes with
+              immediate testing
+            </li>
+            <li>
+              <strong>Strangler pattern:</strong> Gradually replace old code
+              with new implementation
+            </li>
+            <li>
+              <strong>Safety nets:</strong> Add tests before making changes,
+              feature flags for rollback
+            </li>
+            <li>
+              <strong>Knowledge sharing:</strong> Document findings, create team
+              learning sessions
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Testing & Code Quality -->
+    <div class="section testing">
+      <div class="question" onclick="toggleAnswer(this)">
+        <span class="question-text"
+          >Explain your unit testing practices and test structure
+          organization.</span
+        >
+        <span class="toggle">▼</span>
+      </div>
+      <div class="answer">
+        <div class="answer-content">
+          <strong>Testing framework and structure:</strong>
+          <ul>
+            <li>
+              <strong>XCTest:</strong> Standard iOS testing framework, test case
+              organization
+            </li>
+            <li>
+              <strong>Test naming:</strong> Descriptive names like
+              test_methodName_condition_expectedResult
+            </li>
+            <li>
+              <strong>Test organization:</strong> Group by feature/class,
+              separate unit/integration/UI tests
+            </li>
+            <li>
+              <strong>Setup/Teardown:</strong> Clean test isolation, shared test
+              utilities
+            </li>
+          </ul>
+          <pre><code class="language-swift">
+func test_userLogin_validCredentials_returnsSuccess() {
+    // Given
+    let credentials = UserCredentials(email: "test@example.com", password: "valid")
+    let mockService = MockAuthService()
+    // When
+    let result = authManager.login(with: credentials)
+    // Then
+    XCTAssertTrue(result.isSuccess)
+}
+          </code></pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="section testing">
+      <div class="question" onclick="toggleAnswer(this)">
+        <span class="question-text"
+          >How do you implement dependency injection in iOS? Discuss different
+          approaches.</span
+        >
+        <span class="toggle">▼</span>
+      </div>
+      <div class="answer">
+        <div class="answer-content">
+          <strong>Constructor Injection (Preferred):</strong>
+          <pre><code class="language-swift">
+class UserViewModel {
+    private let apiService: APIServiceProtocol
+    private let analytics: AnalyticsProtocol
+    init(apiService: APIServiceProtocol, analytics: AnalyticsProtocol) {
+        self.apiService = apiService
+        self.analytics = analytics
+    }
+}
+          </code></pre>
+          <strong>Environment Pattern:</strong>
+          <pre><code class="language-swift">
+struct Environment {
+    var analytics: AnalyticsClient
+    var dateProvider: () -> Date
+    var uuidProvider: () -> UUID
+}
+          </code></pre>
+          <strong>Factory Pattern:</strong>
+          <ul>
+            <li>Use when multiple instances needed</li>
+            <li>Lazy instantiation requirements</li>
+            <li>Complex creation logic</li>
+          </ul>
+          <strong>Avoid:</strong> Service locators, hidden singletons, global
+          state
+        </div>
+      </div>
+    </div>
+
+    <!-- Swift vs Objective-C -->
+    <div class="section swift">
+      <div class="question" onclick="toggleAnswer(this)">
+        <span class="question-text"
+          >Compare Swift and Objective-C. What are the key advantages of
+          Swift?</span
+        >
+        <span class="toggle">▼</span>
+      </div>
+      <div class="answer">
+        <div class="answer-content">
+          <strong>Swift advantages:</strong>
+          <ul>
+            <li>
+              <strong>Type Safety:</strong> Compile-time error detection,
+              reduced runtime crashes
+            </li>
+            <li>
+              <strong>Optionals:</strong> Explicit null handling, eliminates
+              null pointer exceptions
+            </li>
+            <li>
+              <strong>Modern syntax:</strong> Cleaner, more readable code,
+              functional programming features
+            </li>
+            <li>
+              <strong>Performance:</strong> Optimized compilation, value types,
+              reduced overhead
+            </li>
+            <li>
+              <strong>Memory management:</strong> Automatic reference counting
+              with safer patterns
+            </li>
+          </ul>
+          <strong>Swift enums vs ObjC:</strong>
+          <ul>
+            <li>Associated values and pattern matching</li>
+            <li>Methods and computed properties on enums</li>
+            <li>Exhaustive switch statements</li>
+          </ul>
+          <strong>Interoperability:</strong> Bridging headers, @objc attributes,
+          mixed-language projects
+        </div>
+      </div>
+    </div>
+
+    <!-- Concurrency -->
+    <div class="section concurrency">
+      <div class="question" onclick="toggleAnswer(this)">
+        <span class="question-text"
+          >Explain Swift's modern concurrency features (async/await, actors) vs
+          traditional approaches.</span
+        >
+        <span class="toggle">▼</span>
+      </div>
+      <div class="answer">
+        <div class="answer-content">
+          <strong>Modern Swift Concurrency:</strong>
+          <pre><code class="language-swift">
+// Async/await
+func fetchUserData() async throws -> User {
+    let data = try await networkService.fetch("/user")
+    return try JSONDecoder().decode(User.self, from: data)
+}
+// Actor for thread-safe state
+actor UserStore {
+    private var users: [User] = []
+    func addUser(_ user: User) {
+        users.append(user)
+    }
+}
+          </code></pre>
+          <strong>Traditional approaches comparison:</strong>
+          <ul>
+            <li>
+              <strong>DispatchQueue:</strong> Manual thread management, callback
+              complexity
+            </li>
+            <li>
+              <strong>NSOperationQueue:</strong> More control but more
+              boilerplate
+            </li>
+            <li>
+              <strong>Combine:</strong> Reactive programming, good for data
+              streams
+            </li>
+          </ul>
+          <strong>When to choose each:</strong>
+          <ul>
+            <li>
+              <strong>Async/await:</strong> Simple asynchronous operations, API
+              calls
+            </li>
+            <li>
+              <strong>Actors:</strong> Shared mutable state, thread-safe data
+              access
+            </li>
+            <li>
+              <strong>Combine:</strong> UI binding, complex data transformation
+              pipelines
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Memory Management -->
+    <div class="section memory">
+      <div class="question" onclick="toggleAnswer(this)">
+        <span class="question-text"
+          >Explain value types vs reference types in Swift and their performance
+          implications.</span
+        >
+        <span class="toggle">▼</span>
+      </div>
+      <div class="answer">
+        <div class="answer-content">
+          <strong>Value Types (Structs, Enums):</strong>
+          <ul>
+            <li>
+              <strong>Copy semantics:</strong> Each instance is independent
+            </li>
+            <li>
+              <strong>Stack allocation:</strong> Faster allocation/deallocation
+            </li>
+            <li>
+              <strong>Thread safety:</strong> No shared mutable state by default
+            </li>
+            <li>
+              <strong>Use for:</strong> Data models, small objects, immutable
+              data
+            </li>
+          </ul>
+          <strong>Reference Types (Classes):</strong>
+          <ul>
+            <li><strong>Reference semantics:</strong> Shared instances</li>
+            <li>
+              <strong>Heap allocation:</strong> ARC overhead, potential retain
+              cycles
+            </li>
+            <li>
+              <strong>Identity:</strong> Can compare instance identity (===)
+            </li>
+            <li>
+              <strong>Use for:</strong> Complex objects, inheritance
+              hierarchies, identity-important objects
+            </li>
+          </ul>
+          <strong>Performance considerations:</strong>
+          <ul>
+            <li>
+              Large structs: Consider reference types to avoid expensive copies
+            </li>
+            <li>Small classes: Consider structs to reduce heap allocation</li>
+            <li>Copy-on-write for collections to optimize struct copying</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Architecture -->
+    <div class="section architecture">
+      <div class="question" onclick="toggleAnswer(this)">
+        <span class="question-text"
+          >Explain the SOLID principles and provide iOS-specific examples of
+          each.</span
+        >
+        <span class="toggle">▼</span>
+      </div>
+      <div class="answer">
+        <div class="answer-content">
+          <strong>Single Responsibility Principle (SRP):</strong>
+          <ul>
+            <li>Each class should have only one reason to change</li>
+            <li>
+              <strong>Example:</strong> Separate UserViewModel (UI logic) from
+              UserService (API calls)
+            </li>
+          </ul>
+
+          <strong>Open/Closed Principle (OCP):</strong>
+          <ul>
+            <li>Open for extension, closed for modification</li>
+            <li>
+              <strong>Example:</strong> Protocol-based payment processors, add
+              new payment methods without modifying existing code
+            </li>
+          </ul>
+
+          <strong>Liskov Substitution Principle (LSP):</strong>
+          <ul>
+            <li>Derived classes must be substitutable for base classes</li>
+            <li>
+              <strong>Example:</strong> Any NetworkService implementation should
+              work with existing code
+            </li>
+          </ul>
+
+          <strong>Interface Segregation Principle (ISP):</strong>
+          <ul>
+            <li>Clients shouldn't depend on interfaces they don't use</li>
+            <li>
+              <strong>Example:</strong> Split large protocols into smaller,
+              specific ones
+            </li>
+          </ul>
+
+          <strong>Dependency Inversion Principle (DIP):</strong>
+          <ul>
+            <li>Depend on abstractions, not concretions</li>
+            <li>
+              <strong>Example:</strong> ViewModels depend on protocol, not
+              concrete API service
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- App Lifecycle -->
+    <div class="section lifecycle">
+      <div class="question" onclick="toggleAnswer(this)">
+        <span class="question-text"
+          >Describe the changes in iOS app lifecycle management post-iOS 13 with
+          SceneDelegate.</span
+        >
+        <span class="toggle">▼</span>
+      </div>
+      <div class="answer">
+        <div class="answer-content">
+          <strong>Pre-iOS 13 (AppDelegate only):</strong>
+          <ul>
+            <li>Single app instance, simple lifecycle management</li>
+            <li>
+              Methods: didFinishLaunching, willEnterForeground,
+              didEnterBackground
+            </li>
+          </ul>
+
+          <strong>iOS 13+ (SceneDelegate):</strong>
+          <ul>
+            <li>
+              <strong>Multi-scene support:</strong> Multiple windows/scenes per
+              app
+            </li>
+            <li>
+              <strong>AppDelegate:</strong> App-level events, scene session
+              management
+            </li>
+            <li>
+              <strong>SceneDelegate:</strong> Scene-specific lifecycle, UI state
+              management
+            </li>
+          </ul>
+
+          <strong>Key SceneDelegate methods:</strong>
+          <pre><code class="language-swift">
+func scene(_ scene: UIScene, willConnectTo session: UISceneSession)
+func sceneDidBecomeActive(_ scene: UIScene)
+func sceneWillResignActive(_ scene: UIScene)
+func sceneDidEnterBackground(_ scene: UIScene)
+          </code></pre>
+
+          <strong>State restoration:</strong>
+          <ul>
+            <li>Scene-based state preservation</li>
+            <li>User activity continuation between scenes</li>
+            <li>Background app refresh per scene</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      let reviewedQuestions = new Set();
+
+      function toggleAnswer(questionElement) {
+        const answer = questionElement.nextElementSibling;
+        const isCurrentlyOpen = answer.classList.contains("show");
+
+        // Close all other answers
+        document.querySelectorAll(".answer.show").forEach((ans) => {
+          ans.classList.remove("show");
+          ans.previousElementSibling.classList.remove("active");
+        });
+
+        // Toggle current answer
+        if (!isCurrentlyOpen) {
+          answer.classList.add("show");
+          questionElement.classList.add("active");
+
+          // Mark as reviewed
+          const questionText =
+            questionElement.querySelector(".question-text").textContent;
+          reviewedQuestions.add(questionText);
+          updateStats();
+        }
+      }
+
+      function updateStats() {
+        const total = document.querySelectorAll(".question").length;
+        const reviewed = reviewedQuestions.size;
+        const percentage = Math.round((reviewed / total) * 100);
+
+        document.getElementById("answeredQuestions").textContent = reviewed;
+        document.getElementById("progressPercent").textContent =
+          percentage + "%";
+        document.getElementById("progress").style.width = percentage + "%";
+      }
+
+      // Initialize stats
+      updateStats();
+
+      // Keyboard shortcuts
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape") {
+          // Close all answers
+          document.querySelectorAll(".answer.show").forEach((ans) => {
+            ans.classList.remove("show");
+            ans.previousElementSibling.classList.remove("active");
+          });
+        }
+      });
+    </script>
+  </body>
+</html>
