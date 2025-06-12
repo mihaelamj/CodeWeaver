@@ -1,0 +1,11 @@
+<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Curly braces for CODE -->
+  <g stroke="#0071e3" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M14 8 C10 14, 10 34, 14 40"/>
+    <path d="M34 8 C38 14, 38 34, 34 40"/>
+  </g>
+  <!-- Weaving thread: wavy line passing through braces -->
+  <g stroke="#0071e3" stroke-width="2" fill="none" stroke-linecap="round">
+    <path d="M14 24 Q19 14, 24 24 T34 24"/>
+  </g>
+</svg> 

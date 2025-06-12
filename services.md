@@ -45,10 +45,6 @@
 ## ✅ Testing, Automation, and Tooling
 - Comprehensive **unit testing** and **UI testing** infrastructure
 - **Automated localization**, snapshot testing, and UI previewing
-- Internal tools like:
-  - **CVBuilder** (resume generator)
-  - **Xcode Template Manager**
-  - **Custom Swift-based IDE components**
 
 ---
 
