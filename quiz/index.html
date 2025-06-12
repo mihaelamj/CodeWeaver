@@ -1041,6 +1041,307 @@ func sceneDidEnterBackground(_ scene: UIScene)
       </div>
     </div>
 
+    <!-- Kean Blog Interviewer Questions -->
+    <div class="section architecture">
+      <div class="question" onclick="toggleAnswer(this)">
+        <span class="question-text">In your experience, what are the main challenges when migrating an existing codebase to Swift's async/await? How would you approach refactoring legacy completion-handler code?</span>
+        <span class="toggle">▼</span>
+      </div>
+      <div class="answer">
+        <div class="answer-content">
+          <strong>Answer:</strong>
+          <ul>
+            <li><strong>Identifying async boundaries:</strong> Start by mapping out all functions that use completion handlers. Replace them with <code>async</code> functions, but do so incrementally to avoid breaking the codebase.</li>
+            <li><strong>Error propagation:</strong> With <code>async/await</code>, errors are thrown instead of passed in a result. Refactor error handling logic to use <code>try/await</code> and <code>do/catch</code> blocks.</li>
+            <li><strong>Cancellation:</strong> Use <code>Task</code> and <code>Task.cancel()</code> for cooperative cancellation, replacing manual cancellation tokens.</li>
+            <li><strong>Testing:</strong> Update tests to use <code>async</code> test methods. Use <code>XCTestExpectation</code> only for legacy code.</li>
+            <li><strong>Gradual migration:</strong> Use <code>withCheckedContinuation</code> to bridge between old and new code, allowing for stepwise migration.</li>
+          </ul>
+          <pre><code class="language-swift">// Before
+func fetchData(completion: @escaping (Result<Data, Error>) -> Void) {
+    network.request { result in
+        completion(result)
+    }
+}
+// After
+func fetchData() async throws -> Data {
+    return try await network.request()
+}
+</code></pre>
+          <a href="https://kean.blog/post/web-api-client-async-await" target="_blank">Web API Client in Swift (kean.blog)</a>
+        </div>
+      </div>
+    </div>
+    <div class="section concurrency">
+      <div class="question" onclick="toggleAnswer(this)">
+        <span class="question-text">Can you explain the actor model in Swift and give a practical example of when you would use it over other concurrency primitives?</span>
+        <span class="toggle">▼</span>
+      </div>
+      <div class="answer">
+        <div class="answer-content">
+          <strong>Answer:</strong>
+          <p>Actors in Swift are reference types that protect their mutable state by isolating it from concurrent access. Only one task can access an actor's mutable state at a time, which prevents data races without manual locking.</p>
+          <ul>
+            <li><strong>When to use:</strong> Use actors for shared resources that are accessed from multiple concurrent tasks, such as caches, counters, or session managers.</li>
+            <li><strong>Advantages:</strong> Simpler and safer than using <code>DispatchQueue</code> or locks. The compiler enforces isolation, so you can't accidentally access mutable state from outside the actor.</li>
+            <li><strong>Limitations:</strong> Actors are reference types and can introduce performance overhead if overused. Use structs for value types and actors for shared, mutable state.</li>
+          </ul>
+          <pre><code class="language-swift">actor Counter {
+    private var value = 0
+    func increment() {
+        value += 1
+    }
+    func getValue() -> Int {
+        value
+    }
+}
+
+// Usage:
+let counter = Counter()
+Task {
+    await counter.increment()
+    let current = await counter.getValue()
+    print(current)
+}
+</code></pre>
+          <a href="https://kean.blog/post/concurrency-done-right" target="_blank">Concurrency Done Right (kean.blog)</a>
+        </div>
+      </div>
+    </div>
+    <div class="section sdk">
+      <div class="question" onclick="toggleAnswer(this)">
+        <span class="question-text">What are some of the limitations or pain points you've encountered with Swift Package Manager integration in Xcode, and how have you worked around them?</span>
+        <span class="toggle">▼</span>
+      </div>
+      <div class="answer">
+        <div class="answer-content">
+          <strong>Answer:</strong>
+          <ul>
+            <li><strong>Slow dependency resolution:</strong> Large projects with many dependencies can experience slow package resolution and build times. Workaround: Use fewer dependencies, or pre-build frameworks when possible.</li>
+            <li><strong>Binary targets and resources:</strong> SPM has limited support for binary targets and resource bundles, which can complicate integration of SDKs that require them. Workaround: Use manual resource copying or fallback to CocoaPods for those dependencies.</li>
+            <li><strong>Versioning and scripts:</strong> SPM lacks advanced versioning (e.g., pre-release tags) and custom build scripts. Workaround: Use post-build scripts in Xcode or manage versions manually.</li>
+            <li><strong>Transitive dependency issues:</strong> Conflicts can arise if multiple packages depend on different versions of the same library. Workaround: Align versions across dependencies or fork packages if necessary.</li>
+          </ul>
+          <a href="https://kean.blog/post/swiftpm-xcode" target="_blank">SwiftPM and Xcode (kean.blog)</a>
+        </div>
+      </div>
+    </div>
+    <div class="section sdk">
+      <div class="question" onclick="toggleAnswer(this)">
+        <span class="question-text">How would you design a modern web API client in Swift using async/await? What are the key considerations for error handling and testability?</span>
+        <span class="toggle">▼</span>
+      </div>
+      <div class="answer">
+        <div class="answer-content">
+          <strong>Answer:</strong>
+          <ul>
+            <li><strong>Protocol-oriented design:</strong> Define an <code>APIClient</code> protocol to allow for dependency injection and mocking in tests.</li>
+            <li><strong>Async/await for clarity:</strong> Use <code>async</code> functions for all network calls, which makes the code easier to read and maintain.</li>
+            <li><strong>Error handling:</strong> Centralize error handling by mapping HTTP/network errors to custom error types. Use <code>do/catch</code> blocks in consumers.</li>
+            <li><strong>Testability:</strong> Inject mock clients in tests to simulate network responses and errors. Write unit tests for each endpoint and error scenario.</li>
+          </ul>
+          <pre><code class="language-swift">protocol APIClient {
+    func fetch<T: Decodable>(_ endpoint: String) async throws -> T
+}
+
+class MyAPIClient: APIClient {
+    func fetch<T: Decodable>(_ endpoint: String) async throws -> T {
+        let (data, _) = try await URLSession.shared.data(from: URL(string: endpoint)!)
+        return try JSONDecoder().decode(T.self, from: data)
+    }
+}
+
+// Example usage:
+Task {
+    do {
+        let user: User = try await apiClient.fetch("https://api.example.com/user")
+        print(user)
+    } catch {
+        print("Error: \(error)")
+    }
+}
+</code></pre>
+          <a href="https://kean.blog/post/web-api-client-async-await" target="_blank">Web API Client in Swift (kean.blog)</a>
+        </div>
+      </div>
+    </div>
+    <div class="section sdk">
+      <div class="question" onclick="toggleAnswer(this)">
+        <span class="question-text">What features do you consider essential in a logging and network inspection tool for iOS? Have you used or contributed to tools like Pulse?</span>
+        <span class="toggle">▼</span>
+      </div>
+      <div class="answer">
+        <div class="answer-content">
+          <strong>Answer:</strong>
+          <ul>
+            <li><strong>Real-time log viewing:</strong> Ability to see logs as they happen, with filtering and search.</li>
+            <li><strong>Network inspection:</strong> View all HTTP requests and responses, including headers, bodies, and timing.</li>
+            <li><strong>Pinning and grouping:</strong> Pin important logs, group by session or request, and annotate logs for later review.</li>
+            <li><strong>Privacy and security:</strong> Mask sensitive data, redact tokens, and ensure logs are not leaked in production.</li>
+            <li><strong>Integration:</strong> Export logs for bug reports, integrate with CI/CD, and support for crash reporting tools.</li>
+          </ul>
+          <p><strong>Pulse</strong> is an open-source tool that provides all of these features and is highly recommended for iOS development.</p>
+          <a href="https://kean.blog/post/pulse-network-inspector" target="_blank">Pulse: Network Inspector (kean.blog)</a>
+        </div>
+      </div>
+    </div>
+    <div class="section testing">
+      <div class="question" onclick="toggleAnswer(this)">
+        <span class="question-text">What do you think makes unit testing effective in Swift? How do you avoid writing tests that are a waste of time?</span>
+        <span class="toggle">▼</span>
+      </div>
+      <div class="answer">
+        <div class="answer-content">
+          <strong>Answer:</strong>
+          <ul>
+            <li><strong>Test public API and business logic:</strong> Focus on testing the contract of your types, not private implementation details.</li>
+            <li><strong>Keep tests fast and reliable:</strong> Avoid slow integration tests in your unit test target. Use mocks and stubs for dependencies.</li>
+            <li><strong>Refactor for testability:</strong> If something is hard to test, refactor the code to make it easier, e.g., by injecting dependencies.</li>
+            <li><strong>Maintainable tests:</strong> Write clear, descriptive test names and keep test code as clean as production code.</li>
+            <li><strong>Avoid over-mocking:</strong> Only mock what you must. Over-mocking leads to brittle tests that break with refactoring.</li>
+          </ul>
+          <pre><code class="language-swift">// Example of a good test
+func test_userLogin_success() {
+    let mockService = MockAuthService()
+    let viewModel = LoginViewModel(authService: mockService)
+    mockService.shouldSucceed = true
+    viewModel.login(username: "user", password: "pass")
+    XCTAssertTrue(viewModel.isLoggedIn)
+}
+</code></pre>
+          <a href="https://kean.blog/post/effective-unit-testing" target="_blank">Effective Unit Testing (kean.blog)</a>
+        </div>
+      </div>
+    </div>
+    <div class="section architecture">
+      <div class="question" onclick="toggleAnswer(this)">
+        <span class="question-text">How do you decide between MVC, MVVM, and functional architectures in a new SwiftUI project? What are the tradeoffs?</span>
+        <span class="toggle">▼</span>
+      </div>
+      <div class="answer">
+        <div class="answer-content">
+          <strong>Answer:</strong>
+          <ul>
+            <li><strong>MVC:</strong> Simple and familiar, but can lead to "Massive View Controller" problem as the app grows. Good for small projects or prototypes.</li>
+            <li><strong>MVVM:</strong> Separates UI from business logic, making code more testable and maintainable. More boilerplate, but scales better for medium to large projects.</li>
+            <li><strong>Functional:</strong> Uses value types, immutability, and composition. Highly testable and predictable, but requires a team comfortable with functional programming concepts.</li>
+            <li><strong>Decision factors:</strong> Team experience, project size, need for testability, and long-term maintainability.</li>
+          </ul>
+          <pre><code class="language-swift">// Example: MVVM in SwiftUI
+struct UserView: View {
+    @ObservedObject var viewModel: UserViewModel
+    var body: some View {
+        Text(viewModel.username)
+    }
+}
+
+class UserViewModel: ObservableObject {
+    @Published var username: String = ""
+    // Business logic here
+}
+</code></pre>
+          <a href="https://kean.blog/post/lets-talk-architecture" target="_blank">Let's Talk Architecture (kean.blog)</a>
+        </div>
+      </div>
+    </div>
+    <div class="section sdk">
+      <div class="question" onclick="toggleAnswer(this)">
+        <span class="question-text">What are your best practices for writing documentation for a Swift framework or SDK? How do you ensure it stays up to date and useful?</span>
+        <span class="toggle">▼</span>
+      </div>
+      <div class="answer">
+        <div class="answer-content">
+          <strong>Answer:</strong>
+          <ul>
+            <li><strong>Write clear API docs:</strong> Use Swift's documentation comments (<code>///</code>) for every public type and method. Include usage examples and edge cases.</li>
+            <li><strong>Automate doc generation:</strong> Use DocC or Jazzy to generate and publish documentation sites automatically as part of CI/CD.</li>
+            <li><strong>Keep docs in sync:</strong> Set up CI checks to fail builds if documentation coverage drops. Encourage code reviewers to check docs as part of PRs.</li>
+            <li><strong>Encourage feedback:</strong> Make it easy for users to suggest improvements or report unclear docs, e.g., via GitHub issues.</li>
+          </ul>
+          <pre><code class="language-swift">/// Downloads an image from the given URL.
+/// - Parameter url: The URL of the image.
+/// - Returns: The downloaded UIImage.
+func downloadImage(from url: URL) async throws -> UIImage
+</code></pre>
+          <a href="https://kean.blog/post/nuke-docs" target="_blank">Nuke Docs (kean.blog)</a>
+        </div>
+      </div>
+    </div>
+    <div class="section general">
+      <div class="question" onclick="toggleAnswer(this)">
+        <span class="question-text">What motivates you to contribute to open source? How do you balance open source work with your main job?</span>
+        <span class="toggle">▼</span>
+      </div>
+      <div class="answer">
+        <div class="answer-content">
+          <strong>Answer:</strong>
+          <ul>
+            <li><strong>Giving back:</strong> Open source is a way to contribute to the community and help others solve similar problems.</li>
+            <li><strong>Learning and growth:</strong> Working on open source exposes you to new ideas, code reviews, and feedback from other developers.</li>
+            <li><strong>Portfolio and reputation:</strong> Public contributions help build your professional reputation and can lead to job opportunities.</li>
+            <li><strong>Balance:</strong> Set boundaries for open source time, prioritize issues, and avoid burnout by not overcommitting.</li>
+          </ul>
+          <p>Many developers, including Kean, recommend treating open source as a passion project, not a second job.</p>
+          <a href="https://kean.blog/post/open-sourcing-pulse" target="_blank">Open-Sourcing Pulse (kean.blog)</a>
+        </div>
+      </div>
+    </div>
+    <div class="section swift">
+      <div class="question" onclick="toggleAnswer(this)">
+        <span class="question-text">What are the biggest challenges you've faced when building multiplatform (iOS/macOS/watchOS) apps with SwiftUI?</span>
+        <span class="toggle">▼</span>
+      </div>
+      <div class="answer">
+        <div class="answer-content">
+          <strong>Answer:</strong>
+          <ul>
+            <li><strong>Platform-specific APIs:</strong> Not all SwiftUI features are available on every platform. Use <code>#if os()</code> checks and provide platform-specific implementations where needed.</li>
+            <li><strong>Designing adaptive UIs:</strong> Create layouts that work well on all screen sizes and input methods (touch, mouse, keyboard).</li>
+            <li><strong>Testing and debugging:</strong> Test on all platforms regularly, as bugs can be platform-specific. Use simulators and real devices.</li>
+            <li><strong>Code organization:</strong> Structure code into shared modules and use conditional compilation to separate platform-specific code.</li>
+          </ul>
+          <pre><code class="language-swift">#if os(iOS)
+typealias PlatformColor = UIColor
+#elseif os(macOS)
+typealias PlatformColor = NSColor
+#endif
+</code></pre>
+          <a href="https://kean.blog/post/appkit-is-done" target="_blank">AppKit is Done (kean.blog)</a>
+        </div>
+      </div>
+    </div>
+    <div class="section testing">
+      <div class="question" onclick="toggleAnswer(this)">
+        <span class="question-text">How do you set up continuous integration for a Swift framework? What are the key steps to ensure reliability and fast feedback?</span>
+        <span class="toggle">▼</span>
+      </div>
+      <div class="answer">
+        <div class="answer-content">
+          <strong>Answer:</strong>
+          <ul>
+            <li><strong>Automate builds and tests:</strong> Use CI tools like GitHub Actions or Bitrise to run builds and tests on every commit and pull request.</li>
+            <li><strong>Multi-platform testing:</strong> Test on all supported platforms (iOS, macOS, etc.) and with multiple Swift/Xcode versions to catch compatibility issues early.</li>
+            <li><strong>Static analysis and code coverage:</strong> Run SwiftLint, SonarQube, or similar tools, and enforce code coverage thresholds.</li>
+            <li><strong>Fast feedback:</strong> Keep CI pipelines fast by caching dependencies and running only necessary jobs for each change.</li>
+          </ul>
+          <pre><code class="language-yaml"># Example: GitHub Actions workflow
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: '15.0'
+      - name: Build and test
+        run: xcodebuild test -scheme MyFramework -destination 'platform=iOS Simulator,name=iPhone 14'
+</code></pre>
+          <a href="https://kean.blog/post/ci-for-swift-frameworks" target="_blank">CI for Swift Frameworks (kean.blog)</a>
+        </div>
+      </div>
+    </div>
+
     <script>
       let reviewedQuestions = new Set();
 
