@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Interview Questions & Answers</title>
+    <style>
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 20px;
+        line-height: 1.6;
+        background: #f8f9fa;
+      }
+      .header {
+        text-align: center;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 30px;
+        border-radius: 12px;
+        margin-bottom: 30px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      }
+      .section {
+        background: white;
+        margin-bottom: 20px;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+        border-left: 5px solid #ed8936;
+      }
+      .question {
+        background: #f7fafc;
+        padding: 20px;
+        cursor: pointer;
+        border-bottom: 1px solid #e2e8f0;
+        transition: all 0.3s ease;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .question:hover {
+        background: #edf2f7;
+      }
+      .question-text {
+        font-weight: 600;
+        color: #2d3748;
+      }
+      .toggle {
+        font-size: 18px;
+        color: #718096;
+        transition: transform 0.3s ease;
+      }
+      .question.active .toggle {
+        transform: rotate(180deg);
+      }
+      .answer {
+        padding: 0 20px;
+        max-height: 0;
+        overflow: hidden;
+        transition: all 0.4s ease;
+        background: white;
+      }
+      .answer.show {
+        max-height: 2000px;
+        padding: 20px;
+      }
+      .answer-content {
+        color: #4a5568;
+        margin: 0;
+      }
+      .answer-content ul {
+        margin: 10px 0;
+        padding-left: 20px;
+      }
+      .answer-content li {
+        margin-bottom: 8px;
+      }
+      .answer-content strong {
+        color: #2d3748;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <h1>Interview Questions & Answers</h1>
+    </div>
+    <div id="content"></div>
+    <script>
+      const questions = [
+        {
+          section: "Data Structures",
+          q: "Q1: What are the main differences between arrays and linked lists?",
+          a: `<ul><li><strong>Arrays</strong> provide O(1) access to elements by index but have fixed size (in some languages) and costly insertions/deletions (O(n)) except at the end.</li><li><strong>Linked lists</strong> consist of nodes with pointers to next (and possibly previous) nodes, allowing O(1) insertions/deletions if you have the reference, but O(n) access by index since traversal is required.</li></ul>`
+        },
+        {
+          section: "Data Structures",
+          q: "Q2: When would you use a hash table over a tree?",
+          a: `<ul><li>Use a <strong>hash table</strong> when you need average O(1) lookup, insertion, and deletion, and order doesn't matter.</li><li>Use a <strong>tree</strong> (like a balanced BST) when you need ordered data, range queries, or guaranteed O(log n) worst-case performance.</li></ul>`
+        },
+        {
+          section: "Data Structures",
+          q: "Q3: Explain how a stack and queue differ.",
+          a: `<ul><li>A <strong>stack</strong> is LIFO (Last In, First Out); elements are added and removed from the top. Used for backtracking, function calls, etc.</li><li>A <strong>queue</strong> is FIFO (First In, First Out); elements are added at the rear and removed from the front. Used in scheduling, buffering, BFS traversal, etc.</li></ul>`
+        },
+        {
+          section: "Algorithms",
+          q: "Q4: Describe the difference between BFS and DFS traversals on a graph.",
+          a: `<ul><li><strong>BFS (Breadth-First Search):</strong> Explores neighbors level by level using a queue; useful for shortest path in unweighted graphs.</li><li><strong>DFS (Depth-First Search):</strong> Explores as deep as possible along one branch before backtracking using recursion or a stack.</li></ul>`
+        },
+        {
+          section: "Algorithms",
+          q: "Q5: What are inorder, preorder, and postorder traversals in a binary tree?",
+          a: `<ul><li><strong>Inorder:</strong> Left subtree → Node → Right subtree (useful for BSTs to get sorted order).</li><li><strong>Preorder:</strong> Node → Left subtree → Right subtree (used to copy tree or serialize).</li><li><strong>Postorder:</strong> Left subtree → Right subtree → Node (used for deleting or evaluating expression trees).</li></ul>`
+        },
+        {
+          section: "Algorithms",
+          q: "Q6: Explain quicksort and its average time complexity.",
+          a: `<ul><li>Quicksort is a divide-and-conquer sorting algorithm that picks a pivot, partitions the array around it, and recursively sorts partitions.</li><li>Average time complexity is O(n log n), but worst-case is O(n²) if pivot choices are poor.</li></ul>`
+        },
+        {
+          section: "Object-Oriented Programming Concepts",
+          q: "Q7: What is encapsulation and why is it important?",
+          a: `<ul><li>Encapsulation hides internal object details and exposes only necessary interfaces, preventing unintended interference and misuse. It improves modularity and maintainability.</li></ul>`
+        },
+        {
+          section: "Object-Oriented Programming Concepts",
+          q: "Q8: Explain polymorphism with an example.",
+          a: `<ul><li>Polymorphism allows objects of different classes to be treated as instances of a common superclass/interface, with method calls resolved at runtime.</li><li>Example: Different subclasses override a <code>draw()</code> method; calling <code>draw()</code> on a superclass reference invokes the subclass implementation.</li></ul>`
+        },
+        {
+          section: "Object-Oriented Programming Concepts",
+          q: "Q9: How does inheritance promote code reuse?",
+          a: `<ul><li>Inheritance allows a class to derive from another, inheriting fields and methods, avoiding duplication and enabling extension/customization.</li></ul>`
+        },
+        {
+          section: "Object-Oriented Programming Concepts",
+          q: "Q10: What is abstraction in OOP?",
+          a: `<ul><li>Abstraction means exposing only relevant details and hiding complexity, often through abstract classes or interfaces to define contracts without implementation.</li></ul>`
+        },
+        {
+          section: "Big-O Complexity",
+          q: "Q11: What is the time complexity of accessing an element in an array? What about a linked list?",
+          a: `<ul><li>Array: O(1) time for direct index access.</li><li>Linked list: O(n) time because you must traverse nodes to reach the element.</li></ul>`
+        },
+        {
+          section: "Big-O Complexity",
+          q: "Q12: Compare the time complexities of searching in a balanced binary search tree vs a hash table.",
+          a: `<ul><li>Balanced BST: O(log n) for search, insertion, and deletion.</li><li>Hash Table: O(1) average case for search, insertion, and deletion; worst case O(n) if many collisions.</li></ul>`
+        },
+        {
+          section: "Big-O Complexity",
+          q: "Q13: Explain the difference between time and space complexity.",
+          a: `<ul><li>Time complexity measures the number of operations relative to input size.</li><li>Space complexity measures the amount of memory used relative to input size.</li></ul>`
+        },
+        {
+          section: "Big-O Complexity",
+          q: "Q14: What is the Big-O complexity of traversing all nodes in a tree?",
+          a: `<ul><li>O(n), where n is the number of nodes, because each node is visited once.</li></ul>`
+        },
+        {
+          section: "Data Structures",
+          q: "Q15: How does a doubly linked list differ from a singly linked list? What are its advantages?",
+          a: `<ul><li>A <strong>doubly linked list</strong> has nodes with pointers to both the next and previous nodes, allowing traversal in both directions.</li><li>Advantages include easier deletion of nodes when given a pointer to the node (no need to traverse to find previous), and backward traversal.</li><li>Slightly more memory overhead due to storing two pointers per node.</li></ul>`
+        },
+        {
+          section: "Data Structures",
+          q: "Q16: What data structure would you use to implement a LRU (Least Recently Used) cache? Why?",
+          a: `<ul><li>Use a combination of a <strong>hash table</strong> for O(1) access and a <strong>doubly linked list</strong> to track usage order efficiently.</li><li>The hash table stores keys and pointers to nodes in the linked list, and the list maintains the order of usage for eviction.</li></ul>`
+        },
+        {
+          section: "Algorithms",
+          q: "Q17: Explain the difference between depth-first and breadth-first search in terms of their space complexity.",
+          a: `<ul><li>DFS space complexity is O(h), where h is the maximum depth of the search tree (stack space).</li><li>BFS space complexity is O(w), where w is the maximum width of the tree (queue space), which can be much larger than h in wide graphs.</li></ul>`
+        },
+        {
+          section: "Algorithms",
+          q: "Q18: What is tail recursion? Why is it important?",
+          a: `<ul><li>Tail recursion is a form of recursion where the recursive call is the last operation in the function.</li><li>Important because some languages optimize tail calls to prevent stack overflow by reusing the current stack frame.</li></ul>`
+        },
+        {
+          section: "Object-Oriented Programming Concepts",
+          q: "Q19: What is method overriding, and how does it differ from method overloading?",
+          a: `<ul><li><strong>Overriding:</strong> A subclass provides its own implementation of a method defined in its superclass, enabling polymorphic behavior.</li><li><strong>Overloading:</strong> Multiple methods with the same name but different parameter types or counts in the same scope.</li></ul>`
+        },
+        {
+          section: "Data Structures",
+          q: "Q20: Describe what a hash collision is and how it can be resolved.",
+          a: `<ul><li>A <strong>hash collision</strong> occurs when two different keys produce the same hash value.</li><li>Common resolution methods:<ul><li><strong>Chaining:</strong> Store collided elements in a linked list or bucket.</li><li><strong>Open addressing:</strong> Find another open slot in the hash table using probing.</li></ul></li></ul>`
+        },
+        {
+          section: "Object-Oriented Programming Concepts",
+          q: "Q21: What are abstract classes and interfaces? How do they differ?",
+          a: `<ul><li><strong>Abstract classes:</strong> Can provide both method declarations and implementations; classes can inherit one abstract class.</li><li><strong>Interfaces (protocols in Swift):</strong> Define only method/property signatures; classes or structs conform to multiple protocols.</li><li>Abstract classes can hold state; interfaces usually cannot.</li></ul>`
+        },
+        {
+          section: "Object-Oriented Programming Concepts",
+          q: "Q22: What is the difference between composition and inheritance? When would you prefer one over the other?",
+          a: `<ul><li><strong>Inheritance</strong> models "is-a" relationships; it enables code reuse by deriving classes.</li><li><strong>Composition</strong> models "has-a" relationships; objects are composed of other objects to reuse functionality.</li><li>Prefer composition to reduce tight coupling and increase flexibility; inheritance is suitable for clear hierarchical relationships.</li></ul>`
+        },
+        {
+          section: "Data Structures",
+          q: "Q23: What is the difference between a queue and a deque?",
+          a: `<ul><li>A <strong>queue</strong> allows insertion at the rear and removal from the front (FIFO).</li><li>A <strong>deque</strong> (double-ended queue) allows insertion and removal at both front and rear ends.</li></ul>`
+        },
+        {
+          section: "Algorithms",
+          q: "Q24: Explain binary search and its prerequisites.",
+          a: `<ul><li>Binary search efficiently finds an element in a <strong>sorted array</strong> by repeatedly dividing the search interval in half.</li><li>Time complexity: O(log n).</li><li>Prerequisites: The array must be sorted; random access (array or similar structure) is needed.</li></ul>`
+        },
+        {
+          section: "Object-Oriented Programming Concepts",
+          q: "Q25: How does encapsulation differ from abstraction?",
+          a: `<ul><li><strong>Encapsulation</strong> is about hiding the internal state and requiring all interaction to be performed through an object's methods.</li><li><strong>Abstraction</strong> focuses on exposing only relevant features and hiding complex details from the user.</li><li>Encapsulation is a means to achieve abstraction.</li></ul>`
+        },
+        {
+          section: "Data Structures",
+          q: "Q26: What is the difference between a shallow copy and a deep copy?",
+          a: `<ul><li><strong>Shallow copy:</strong> Copies object references, so both copies share the same nested objects.</li><li><strong>Deep copy:</strong> Copies the object and all objects it references recursively, creating fully independent copies.</li></ul>`
+        },
+        {
+          section: "Algorithms",
+          q: "Q27: How do you detect a cycle in a linked list?",
+          a: `<ul><li>Use Floyd's Tortoise and Hare algorithm:<ul><li>Use two pointers moving at different speeds; if they meet, a cycle exists.</li></ul></li><li>Time complexity: O(n), space: O(1).</li></ul>`
+        },
+        {
+          section: "Big-O Complexity",
+          q: "Q28: What are the time complexities for insertion, deletion, and search in a balanced binary search tree?",
+          a: `<ul><li>All three operations typically run in O(log n) time due to the balanced structure maintaining logarithmic height.</li></ul>`
+        },
+        {
+          section: "Data Structures",
+          q: "Q29: What is a sentinel node in a linked list?",
+          a: `<ul><li>A sentinel node is a dummy node used at the beginning or end of a linked list to simplify edge cases during insertion and deletion.</li></ul>`
+        },
+        {
+          section: "Object-Oriented Programming Concepts",
+          q: "Q30: Explain the difference between static and dynamic dispatch.",
+          a: `<ul><li><strong>Static dispatch:</strong> Method calls are resolved at compile-time (e.g., final methods, structs).</li><li><strong>Dynamic dispatch:</strong> Method calls are resolved at runtime, enabling polymorphism (e.g., class methods, protocols with class constraints).</li></ul>`
+        }
+      ];
+      function createSection(q, a, idx) {
+        return `
+        <div class="section">
+          <div class="question" onclick="toggleAnswer(this)">
+            <span class="question-text">${q}</span>
+            <span class="toggle">▼</span>
+          </div>
+          <div class="answer" id="answer-${idx}">
+            <div class="answer-content">${a}</div>
+          </div>
+        </div>
+        `;
+      }
+      function toggleAnswer(questionElement) {
+        const answer = questionElement.nextElementSibling;
+        const isCurrentlyOpen = answer.classList.contains("show");
+        document.querySelectorAll(".answer.show").forEach((ans) => {
+          ans.classList.remove("show");
+          ans.previousElementSibling.classList.remove("active");
+        });
+        if (!isCurrentlyOpen) {
+          answer.classList.add("show");
+          questionElement.classList.add("active");
+        }
+      }
+      window.toggleAnswer = toggleAnswer;
+      const content = document.getElementById('content');
+      content.innerHTML = questions.map((q, i) => createSection(q.q, q.a, i)).join('');
+    </script>
+  </body>
+</html> 
