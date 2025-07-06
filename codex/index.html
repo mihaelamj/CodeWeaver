@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodeWeaver Codex</title>
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 20px;
+        line-height: 1.6;
+        background: #f8f9fa;
+      }
+      .header {
+        text-align: center;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 30px;
+        border-radius: 12px;
+        margin-bottom: 30px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      }
+      .section {
+        background: white;
+        margin-bottom: 20px;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+        border-left: 5px solid #ed8936;
+      }
+      .question {
+        background: #f7fafc;
+        padding: 20px;
+        cursor: pointer;
+        border-bottom: 1px solid #e2e8f0;
+        transition: all 0.3s ease;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .question:hover {
+        background: #edf2f7;
+      }
+      .question-text {
+        font-weight: 600;
+        color: #2d3748;
+      }
+      .toggle {
+        font-size: 18px;
+        color: #718096;
+        transition: transform 0.3s ease;
+      }
+      .question.active .toggle {
+        transform: rotate(180deg);
+      }
+      .answer {
+        padding: 0 20px;
+        max-height: 0;
+        overflow: hidden;
+        transition: all 0.4s ease;
+        background: white;
+      }
+      .answer.show {
+        max-height: 2000px;
+        padding: 20px;
+      }
+      .answer-content {
+        color: #4a5568;
+        margin: 0;
+      }
+      .answer-content ul {
+        margin: 10px 0;
+        padding-left: 20px;
+      }
+      .answer-content li {
+        margin-bottom: 8px;
+      }
+      .answer-content strong {
+        color: #2d3748;
+      }
+      pre, code {
+        font-family: 'SF Mono', 'Menlo', 'Monaco', 'Consolas', monospace;
+        font-size: 1em;
+      }
+    </style>
+    <link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-swift.min.js"></script>
+</head>
+<body>
+    <div class="header">
+        <h1>Code Examples (Codex)</h1>
+    </div>
+    <div id="content"></div>
+    <script>
+      const examples = [
+        {
+          title: "Two Sum",
+          md: `# Two Sum\n\n## Problem:\n\nGiven an array of integers and a target number, find the indices of two numbers that add up to the target.\n\n## Example:\n\nInput: [2, 7, 11, 15], target: 9\nOutput: [0, 1] because 2 + 7 = 9\n\n## Solution\n\n\`\`\`swift\nimport Foundation\n\n/*\nInput: [2, 7, 11, 15], target: 9\nOutput: [0, 1] because 2 + 7 = 9\n*/\n\nfunc twoSum(numbers: [Int], target: Int) -> [Int] {\n  var seen = [Int: Int]()\n\n  for (index, number) in numbers.enumerated() {\n    let complement = target - number\n    // If the complement is already seen, return indices\n    if let complementIndex = seen[complement] {\n      return [complementIndex, index]\n    }\n    // Otherwise, save the current number and its index\n    seen[number] = index\n  }\n  // No pair found\n  return []\n}\n\`\`\`\n\n## Complexity:\n- Time Complexity: O(n), where n is the length of the array. The array is traversed once, and dictionary lookups are on average O(1).\n- Space Complexity: O(n) in the worst case if no two numbers sum up to the target, requiring storage of all elements in the dictionary.`
+        },
+        {
+          title: "Valid Parentheses",
+          md: `# Problem: Valid Parentheses\n\n**Description:**  \nGiven a string containing just the characters '(' , ')' , '{' , '}' , '[' , and ']', determine if the input string is valid.\n\nAn input string is valid if:\n\n- Open brackets are closed by the same type of brackets.\n- Open brackets are closed in the correct order.\n\n**Example:**  \nInput: "()[]{}"  \nOutput: \`true\`\n\nInput: "(]"  \nOutput: \`false\`\n\n---\n\n### How to solve it?\n\nUse a **stack**:\n\n- Push open brackets onto the stack.\n- For every closing bracket, check if it matches the last open bracket on the stack.\n- If it doesn't match or the stack is empty when trying to pop, it's invalid.\n\n---\n\n### Swift code:\n\n\`\`\`swift\nfunc isValid(_ s: String) -> Bool {\n    var stack = [Character]()\n    let pairs: [Character: Character] = [")": "(", "}": "{", "]": "["]\n\n    for char in s {\n        if pairs.values.contains(char) {\n            // It's an opening bracket\n            stack.append(char)\n        } else if let last = stack.last, pairs[char] == last {\n            // Closing bracket matches last opening bracket\n            stack.removeLast()\n        } else {\n            // No match or stack empty when expecting match\n            return false\n        }\n    }\n    return stack.isEmpty\n}\n\`\`\`\n\n\n## Complexity:\n- Time Complexity: O(n), where n is the length of the string. We iterate through the string once, and stack operations (push/pop) take O(1) time.\n- Space Complexity: O(n) in the worst case when all characters are opening brackets and are stored on the stack.`
+        }
+      ];
+      function createSection(title, html, idx) {
+        return `
+        <div class="section">
+          <div class="question" onclick="toggleAnswer(this)">
+            <span class="question-text">${title}</span>
+            <span class="toggle">▼</span>
+          </div>
+          <div class="answer" id="answer-${idx}">
+            <div class="answer-content">${html}</div>
+          </div>
+        </div>
+        `;
+      }
+      function toggleAnswer(questionElement) {
+        const answer = questionElement.nextElementSibling;
+        const isCurrentlyOpen = answer.classList.contains("show");
+        document.querySelectorAll(".answer.show").forEach((ans) => {
+          ans.classList.remove("show");
+          ans.previousElementSibling.classList.remove("active");
+        });
+        if (!isCurrentlyOpen) {
+          answer.classList.add("show");
+          questionElement.classList.add("active");
+        }
+      }
+      window.toggleAnswer = toggleAnswer;
+      marked.setOptions({
+        breaks: true,
+        highlight: function(code, lang) {
+          if (Prism.languages[lang]) {
+            return Prism.highlight(code, Prism.languages[lang], lang);
+          }
+          return code;
+        }
+      });
+      const content = document.getElementById('content');
+      content.innerHTML = examples.map((ex, i) => {
+        const html = marked.parse(ex.md);
+        return createSection(ex.title, html, i);
+      }).join('');
+      Prism.highlightAll();
+    </script>
+</body>
+</html> 
